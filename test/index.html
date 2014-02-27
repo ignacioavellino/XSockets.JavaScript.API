@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="../src/XSockets.latest.js"></script>
+    <script>
+        var ws;
+        $(function(){
+            ws = new XSockets.WebSocket("ws://joinaspot.com:4509/Generic");
+            ws.onopen = function(connection){
+              logToScreen("A connection is established and ready!", connection);
+
+
+                ws.subscribe("myTopic", function(data){
+                   logToScreen("Got a message on myTopic",data)
+                }, function(data){
+                    logToScreen("Server confirmed a subscription", data)
+                });
+
+                $("form").on("submit", function(evt){
+                    evt.preventDefault();
+                    ws.publish("myTopic",{myMessage: $("#mytext").val()});
+
+                });
+
+            };
+        });
+
+        var logToScreen = function(name,data){
+            $("<div><mark></mark><pre></pre></div>").find("pre").text(JSON.stringify(data))
+                    .end().find("mark").text(name).end().prependTo("#log");
+        }
+
+    </script>
+
+</head>
+<body>
+<h1>Connect,subscribe and publish</h1>
+<p>
+    This simple example shows how to connect, subscribe and publish a message.
+</p>
+
+<h2>Connect</h2>
+<pre>
+ws = new XSockets.WebSocket("ws://joinaspot.com:4509/Generic");
+ws.onopen = function (connection) {
+    // connection is open!
+    // do stuff..
+};
+</pre>
+<h2>Subscribe</h2>
+<pre>
+ws.subscribe("myTopic", function (data {
+    // you recived a message on myTopic....
+}, function (subscription) {
+    // server confirmed the subscription...
+});
+
+// call .unsubscribe(topic) to stop listen..
+</pre>
+<h2>Publish</h2>
+<pre>
+
+ ws.publish("myTopic",{myMessage: 'Ivory belongs to elephants!'});
+
+</pre>
+<form>
+    <input type="text" required id="mytext">
+    <button type="submit">Send message</button>
+</form>
+<hr/>
+<div id="log"></div>
+</body>
+</html>

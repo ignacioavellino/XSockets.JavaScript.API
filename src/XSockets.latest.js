@@ -44,7 +44,7 @@ var XSockets = {
         connection: {
             onclientconnect: "0xc9",
             onclientdisconnect: "0xca",
-            disconnect: "0xcb",
+            disconnect: "0xcb"
         },
         bindings: {
             completed: "0x12c0"
@@ -55,7 +55,6 @@ var XSockets = {
         }
     },
     Utils: {
-
         longToByteArray: function (long) {
             var byteArray = [0, 0, 0, 0, 0, 0, 0, 0];
             for (var index = 0; index < byteArray.length; index++) {
@@ -63,10 +62,8 @@ var XSockets = {
                 byteArray[index] = byte;
                 long = (long - byte) / 256;
             }
-
             return byteArray;
         },
-
         stringToBuffer: function (string) {
             var i, len = string.length,
               arr = new Array(len);
@@ -471,7 +468,7 @@ XSockets.WebSocket = (function () {
             });
 
             this.webSocket.onerror = function (err) {
-                if (self.onerror) self.onerror(er);
+                if (self.onerror) self.onerror(err);
                 self.dispatchEvent(XSockets.Events.onError, err);
             };
             this.webSocket.onclose = function (msg) {

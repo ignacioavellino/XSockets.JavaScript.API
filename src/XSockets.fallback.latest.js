@@ -40,7 +40,7 @@ if ("WebSocket" in window === false) {
         this.handler = url;
         this.client = {
             ClientGuid: "",
-            StorageGuid: "",
+            StorageGuid: ""
         };
         this.MessageEvent = function (data) {
             return {
